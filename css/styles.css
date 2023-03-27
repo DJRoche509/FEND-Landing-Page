@@ -23,8 +23,8 @@ body {
 h1 {
     font-family: 'Fira Sans', sans-serif;
     font-size: 3em;
-    margin: 2em 1rem;
-    /* text-shadow: 3px 3px 5px black; */
+    margin: 5.8em 1rem;
+    text-shadow: 3px 3px 5px black;
 }
 
 @media only screen and (min-width: 35em){
@@ -129,7 +129,7 @@ section {
     text-align: left;
 }
 
-@media only screen and (min-width: 35em){
+@media only screen and (min-width: 50em){
     .landing__container {
         max-width: 50em;
         padding: 4em;
