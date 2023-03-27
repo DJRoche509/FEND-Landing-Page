@@ -22,35 +22,26 @@
  * Define Global Variables
  * 
 */
-const navBarMenu = document.getElementById('navbar__list') ;          //empty unordered list
-const navBarMenuSections = [...document.querySelectorAll('section')]; //creates an array of sections and add items to it for every single section in the document
-const listSections = document.querySelectorAll('section');
-const listLinks = document.querySelectorAll('.navbar__menu a');       // Links in the navbar
+const navBarMenu = document.getElementById("navbar__list"); // empty unordered list
+const navBarMenuSections = document.querySelectorAll("section"); // creates an array and add items to it for each section in the document
 let navBarMenuItems = navBarMenuSections.length;
-
+// const listlinks = document.querySelectorAll(".navbar__menu a"); // links in the navbar
 /**
  * End Global Variables
- * Start Helper Functions
- * 
-*/
-
-
-
-/**
- * End Helper Functions
  * Begin Main Functions
- * 
-*/
+ *
+ */
 
 // build the nav
 
 const dynamicNavBar = () => {
-    //funtion to dynamically add items to the navbar list
+    // function to dynamically add items to the nav bar list
     for (navBarMenuSection of navBarMenuSections) {
-        navBarMenuSectionName = navBarMenuSection.getAttribute('data-nav');
-        navBarMenuSectionLink = navBarMenuSection.getAttribute('id');
-        navBarMenuListItem    = document.createElement('li');
-        navBarMenuListItem.innerHTML = `<a class =  "menu__link" href = "#${navBarMenuSectionLink}" > ${navBarMenuSectionName} </a>` ;
+        navBarMenuSectionName = navBarMenuSection.getAttribute("data-nav");
+        navBarMenuSectionLink = navBarMenuSection.getAttribute("id");
+        navBarMenuListItem = document.createElement("li");
+        navBarMenuListItem.setAttribute('id', `top-section${navBarMenuSectionName.slice(-1)}`);
+        navBarMenuListItem.innerHTML = `<a class='menu__link' href='#${navBarMenuSectionLink}'>${navBarMenuSectionName}</a>`;
         navBarMenu.appendChild(navBarMenuListItem);
     }
 };
@@ -58,25 +49,39 @@ const dynamicNavBar = () => {
 // Add class 'active' to section when near top of viewport
 
 const sectionInViewport = (view) => {
-    // Determine if section is near top of viewport
-    let sectionPos = view.getBoundingClientRect();
-    return sectionPos.top <= 150 && sectionPos.bottom >= 150;
+    // determine if section is near top of viewport
+    let sectionxy = view.getBoundingClientRect();
+    return sectionxy.top <= 150 && sectionxy.bottom >= 150;
 };
 
 const addActiveClass = () => {
-      // function to add active class to viewed section
+    // function to add active class to viewed section
     for (navBarMenuSection of navBarMenuSections) {
         if (sectionInViewport(navBarMenuSection)) {
             if (!navBarMenuSection.classList.contains("your-active-class")) {
                 navBarMenuSection.classList.add("your-active-class");
+                //if Section contains class 'active', then targetSectionID finds the id of that section
+                const targetSectionID = navBarMenuSection?.getAttribute('id');
+                if (targetSectionID){
+                    // Get and set the corresponding id for each nav item as "top-section?"
+                    const targetMenuTop = document.getElementById('top-' + targetSectionID);
+                    // Add "top-menu-btn-active" class to active nav item
+                    targetMenuTop?.classList.add('top-menu-btn-active');
+                }
             }
         } else {
             navBarMenuSection.classList.remove("your-active-class");
+            const targetSectionID = navBarMenuSection?.getAttribute('id');
+                if (targetSectionID){
+                    const targetMenuTop = document.getElementById('top-' + targetSectionID);
+                    // Remove "top-menu-btn-active" class to inactive nav item
+                    targetMenuTop?.classList.remove('top-menu-btn-active');
+                }
         }
     }
 };
 
-// Scroll to anchor ID using scrollTO event
+// Scroll smoothly to section on anchor click
 
 const smoothScroll = () => {
     document.querySelectorAll(".menu__link").forEach((anchor) => {
@@ -89,18 +94,20 @@ const smoothScroll = () => {
         });
     });
 };
-
 /**
  * End Main Functions
  * Begin Events
- * 
-*/
+ *
+ */
 
-// Build menu 
-dynamicNavBar (); 
+// Build menu
+
+dynamicNavBar();
 
 // Scroll to section on link click
-smoothScroll(); 
+
+smoothScroll();
 
 // Set sections as active
-document.addEventListener('scroll', addActiveClass);
+
+document.addEventListener("scroll", addActiveClass);
