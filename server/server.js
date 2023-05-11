@@ -18,6 +18,9 @@ app.get("/", (req,res) => {
 app.get('/styles', (req,res) => {
     res.sendFile(path.join(__dirname,'../public/css/styles.css'))
 })
+app.get('/app', (req,res) => {
+    res.sendFile(path.join(__dirname,'../public/js/app.js'))
+})
 // app.get('/css/styles');
 // app.get('/js/app')
 
